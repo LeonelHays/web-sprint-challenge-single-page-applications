@@ -214,4 +214,37 @@ describe("Pizza test, sprint 3 challenge", () => {
     expect(axios.post).toBeCalledWith('https://reqres.in/api/orders', testOrder)
 
   });
+  it("If i can add text to the instruction box", () => {
+    specialInstructions()
+    .should('have.value', '')
+    .type('anchovies')
+    .should('have.value', 'anchovies')
+  })
+  it("Seeing if I can select multiple elements", () => {
+    toppingsChecklist()
+    .check('pepperoni')
+    cy.get(':checked').should('be.checked').and('have.value', true)
+    toppingsChecklist()
+    .check('onion')
+    cy.get(':checked').should('be.checked').and('have.value', true)
+  })
+  it("Submiting the form", () => {
+    sizeDropdown()
+    .click()
+    sizeOptions()
+    .click('EXTRA-THICC')
+    const sauceInput = cy.get('input[name=sauce]')
+    sauceInput()
+    .check('red')
+    cy.get(':checked').should('be.checked').and('have.value', 'red')
+    toppingsChecklist()
+    .check('pepperoni')
+    cy.get(':checked').should('be.checked').and('have.value', true)
+    specialInstructions()
+    .should('have.value', '')
+    .type('no')
+    .should('have.value', 'no')
+    const submitBtn = () => cy.get('button[id="submitBtn"]')
+    submitBtn().click()
+  })
 });
